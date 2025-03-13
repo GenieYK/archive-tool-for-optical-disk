@@ -21,4 +21,7 @@ export TAR_TARGETS
 [ -z "$PASSWORD" ] && exit 200
 export PASSWORD
 
-(cd $TAR_BASE_DIR && tar czf - $TAR_TARGETS | openssl enc -e -aes256 -k $PASSWORD) | (sh $MAKEARCHIVE_ROOT/split_data_for_dvd.sh)
+rm -rf $MAKEARCHIVE_ROOT/result
+mkdir $MAKEARCHIVE_ROOT/result
+
+(cd $TAR_BASE_DIR && tar czf - $TAR_TARGETS | openssl enc -e -aes256 -k $PASSWORD) | (cd $MAKEARCHIVE_ROOT/result && split -b 256m)
